@@ -1,5 +1,6 @@
 {
     "name": "dbottisti/php-expressive-iterators",
+    "description": "A set of Iterator classes to assist in writing more expressive PHP code",
     "type": "library",
     "license": "MIT",
     "autoload": {
