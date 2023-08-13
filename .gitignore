@@ -1,2 +1,2 @@
-dev-env/**
-vendor/**
+/dev-env/
+/vendor/

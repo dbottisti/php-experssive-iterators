@@ -1,4 +1,18 @@
 {
+    "name": "dbottisti/php-expressive-iterators",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Dbottisti\\PhpExpressiveIterators\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "David Bottisti"
+        }
+    ],
+    "require": {},
     "require-dev": {
         "phpunit/phpunit": "^10"
     }
