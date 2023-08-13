@@ -87,6 +87,59 @@ final class IteratorTest extends TestCase
         // $this->assertTrue(iter($xs)->cmp_by(iter($ys)->rev(), $f) < 0);
         // $this->assertTrue(iter($xs)->cmp_by(iter($ys)->take(2), $f)> 0);
     }
+
+    public function testPartialCompareBy(): void
+    {
+        $f = function (int $x, int $y): int|null {
+            $square = $x * $x;
+            if ($square < $y) {
+                return -1;
+            }
+            if ($square > $y) {
+                return 1;
+            }
+            if ($square == $y) {
+                return 0;
+            }
+            return null;
+        };
+        $xs = [1, 2, 3, 4];
+        $ys = [1, 4, 16];
+
+        $square = function (int $x): int {
+            return $x * $x;
+        };
+
+        $this->assertTrue(iter($xs)->partial_cmp_by(iter($ys), $f) < 0);
+        $this->assertTrue(iter($ys)->partial_cmp_by(iter($xs), $f) > 0);
+        /** 
+         * TODO: Enable these tests after map(), rev() and take() have been 
+         * implemented 
+         */
+        // $this->assertTrue(iter($xs)->partial_cmp_by(iter($xs)->map($square), $f) == 0);
+        // $this->assertTrue(iter($xs)->rev()->partial_cmp_by(iter($ys)->rev(), $f) > 0);
+        // $this->assertTrue(iter($xs)->partial_cmp_by(iter($xs)->rev(), $f) < 0);
+        // $this->assertTrue(iter($xs)->partial_cmp_by(iter($ys)->take(2), $f) > 0);
+
+        $f = function (float $x, float $y): int|null {
+            $square = $x * $x;
+            if ($square < $y) {
+                return -1;
+            }
+            if ($square > $y) {
+                return 1;
+            }
+            if ($square == $y) {
+                return 0;
+            }
+            return null;
+        };
+        $xs = [1.0, 2.0, 3.0, 4.0];
+        $ys = [1.0, 4.0, NAN, 16.0];
+
+        $this->assertTrue(iter($xs)->partial_cmp_by(iter($ys), $f) === null);
+        $this->assertTrue(iter($ys)->partial_cmp_by(iter($xs), $f) > 0);
+    }
 }
 
 ?>

@@ -109,6 +109,30 @@ abstract class IteratorBase
             return $result;
         }
     }
+
+    public function partial_cmp_by(IteratorBase $other, callable $f): int|null
+    {
+        while (true) {
+            $left = $this->next();
+            $right = $other->next();
+
+            if ($left === null && $right === null) {
+                return 0;
+            }
+            if ($left === null) {
+                return -1;
+            }
+            if ($right === null) {
+                return 1;
+            }
+
+            $result = $f($left, $right);
+            if ($result === 0) {
+                continue;
+            }
+            return $result;
+        }
+    }
 }
 
 class Iterator extends IteratorBase
