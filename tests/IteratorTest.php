@@ -4,7 +4,7 @@ namespace Dbottisti\PhpExpressiveIterators;
 
 use PHPUnit\Framework\TestCase;
 
-function iter(iterable $x)
+function iter(iterable $x): IteratorBase
 {
     return new Iterator($x);
 }
@@ -55,6 +55,37 @@ final class IteratorTest extends TestCase
         $this->assertTrue(iter($c)->le(iter($b)) == ($c[0] <= $b[0]));
         $this->assertTrue(iter($c)->gt(iter($b)) == ($c[0] > $b[0]));
         $this->assertTrue(iter($c)->ge(iter($b)) == ($c[0] >= $b[0]));
+    }
+
+    public function testCompareBy(): void
+    {
+        $f = function (int $x, int $y) {
+            $square = $x * $x;
+            if ($square < $y) {
+                return -1;
+            }
+            if ($square > $y) {
+                return 1;
+            }
+            return 0;
+        };
+        $square = function (int $x): int {
+            return $x * $x;
+        };
+
+        $xs = [1, 2, 3, 4];
+        $ys = [1, 4, 16];
+
+        $this->assertTrue(iter($xs)->cmp_by(iter($ys), $f) < 0);
+        $this->assertTrue(iter($ys)->cmp_by(iter($xs), $f) > 0);
+        /** 
+         * TODO: Enable these tests after map(), rev() and take() have been 
+         * implemented 
+         */
+        // $this->assertTrue(iter($xs)->cmp_by($xs->map($square), $f) == 0);
+        // $this->assertTrue(iter($xs)->rev()->cmp_by(iter($ys)->rev(), $f) > 0);
+        // $this->assertTrue(iter($xs)->cmp_by(iter($ys)->rev(), $f) < 0);
+        // $this->assertTrue(iter($xs)->cmp_by(iter($ys)->take(2), $f)> 0);
     }
 }
 
