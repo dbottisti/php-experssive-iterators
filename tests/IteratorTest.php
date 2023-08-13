@@ -69,9 +69,6 @@ final class IteratorTest extends TestCase
             }
             return 0;
         };
-        $square = function (int $x): int {
-            return $x * $x;
-        };
 
         $xs = [1, 2, 3, 4];
         $ys = [1, 4, 16];
@@ -79,9 +76,9 @@ final class IteratorTest extends TestCase
         $this->assertTrue(iter($xs)->cmp_by(iter($ys), $f) < 0);
         $this->assertTrue(iter($ys)->cmp_by(iter($xs), $f) > 0);
         /** 
-         * TODO: Enable these tests after map() and rev() have been implemented 
+         * TODO: Enable these tests after rev() has been implemented 
          */
-        // $this->assertTrue(iter($xs)->cmp_by($xs->map($square), $f) == 0);
+        $this->assertTrue(iter($xs)->cmp_by(iter($xs)->map(fn($x) => $x * $x), $f) == 0);
         // $this->assertTrue(iter($xs)->rev()->cmp_by(iter($ys)->rev(), $f) > 0);
         // $this->assertTrue(iter($xs)->cmp_by(iter($ys)->rev(), $f) < 0);
         $this->assertTrue(iter($xs)->cmp_by(iter($ys)->take(2), $f) > 0);
@@ -105,16 +102,12 @@ final class IteratorTest extends TestCase
         $xs = [1, 2, 3, 4];
         $ys = [1, 4, 16];
 
-        $square = function (int $x): int {
-            return $x * $x;
-        };
-
         $this->assertTrue(iter($xs)->partial_cmp_by(iter($ys), $f) < 0);
         $this->assertTrue(iter($ys)->partial_cmp_by(iter($xs), $f) > 0);
         /** 
-         * TODO: Enable these tests after map() and rev() have been implemented 
+         * TODO: Enable these tests after rev() has been implemented 
          */
-        // $this->assertTrue(iter($xs)->partial_cmp_by(iter($xs)->map($square), $f) == 0);
+        $this->assertTrue(iter($xs)->partial_cmp_by(iter($xs)->map(fn($x) => $x * $x), $f) == 0);
         // $this->assertTrue(iter($xs)->rev()->partial_cmp_by(iter($ys)->rev(), $f) > 0);
         // $this->assertTrue(iter($xs)->partial_cmp_by(iter($xs)->rev(), $f) < 0);
         $this->assertTrue(iter($xs)->partial_cmp_by(iter($ys)->take(2), $f) > 0);
@@ -147,10 +140,10 @@ final class IteratorTest extends TestCase
         $it = iter($xs)->take(count($ys));
         $i = 0;
         while (($x = $it->next()) !== null) {
-            $this->assertEquals($x, $ys[$i]);
+            $this->assertEquals($ys[$i], $x);
             $i += 1;
         }
-        $this->assertEquals($i, count($ys));
+        $this->assertEquals(count($ys), $i);
 
         /**
          * TODO: Enable these tests once ReverseIterators have been implemented
@@ -159,9 +152,44 @@ final class IteratorTest extends TestCase
         // $i = 0;
         // while (($x = $it->next_back()) !== null) {
         //     $i += 1;
-        //     $this->assertEquals($x, $ys[count($ys) - i]);
+        //     $this->assertEquals($ys[count($ys) - i], $x);
         // }
-        // $this->assertEquals($i, count($ys));
+        // $this->assertEquals(count($ys), $i);
+    }
+
+    public function testMapAndReduce(): void
+    {
+        $f = function (int $acc, int $x) {
+            if (2 * $acc > PHP_INT_MAX - $x) {
+                return null;
+            }
+            return 2 * $acc + $x;
+        };
+
+        $this->assertEquals(iter(range(3, 13))->reduce(7, $f), 22513);
+
+        $this->assertEquals(
+            iter(range(0, 10))->map(fn($x) => $x + 3)->reduce(7, $f),
+            iter(range(3, 13))->reduce(7, $f)
+        );
+        // $this->assertEquals(
+        //     iter(range(3, 13))->rfold(7, $f),
+        //     iter(range(0, 10))->map(fn($x) => $x + 3)->rfold(7, $f)
+        // );
+
+        $f = function (int $acc, int $x) {
+            if ($acc > 128 - $x) {
+                return null;
+            }
+            return $acc + $x;
+        };
+
+        $iter = iter(range(0, 40))->map(fn($x) => $x + 10);
+        $this->assertEquals(null, $iter->reduce(0, $f));
+        $this->assertEquals(20, $iter->next());
+        // $this->assertEquals(null, $iter->try_rfold(0, $f));
+        // $this->assertEquals(46, $iter->next_back());
+
     }
 }
 

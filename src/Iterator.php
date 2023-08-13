@@ -138,6 +138,20 @@ abstract class IteratorBase
     {
         return new TakeIterator($this, $num);
     }
+
+    public function map(callable $f): MapIterator
+    {
+        return new MapIterator($this, $f);
+    }
+
+    public function reduce(mixed $init, callable $f): mixed
+    {
+        $result = $init;
+        while ($result !== null && ($value = $this->next()) !== null) {
+            $result = $f($result, $value);
+        }
+        return $result;
+    }
 }
 
 class Iterator extends IteratorBase
