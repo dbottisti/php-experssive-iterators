@@ -133,6 +133,11 @@ abstract class IteratorBase
             return $result;
         }
     }
+
+    public function take(int $num): TakeIterator
+    {
+        return new TakeIterator($this, $num);
+    }
 }
 
 class Iterator extends IteratorBase

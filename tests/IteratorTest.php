@@ -79,13 +79,12 @@ final class IteratorTest extends TestCase
         $this->assertTrue(iter($xs)->cmp_by(iter($ys), $f) < 0);
         $this->assertTrue(iter($ys)->cmp_by(iter($xs), $f) > 0);
         /** 
-         * TODO: Enable these tests after map(), rev() and take() have been 
-         * implemented 
+         * TODO: Enable these tests after map() and rev() have been implemented 
          */
         // $this->assertTrue(iter($xs)->cmp_by($xs->map($square), $f) == 0);
         // $this->assertTrue(iter($xs)->rev()->cmp_by(iter($ys)->rev(), $f) > 0);
         // $this->assertTrue(iter($xs)->cmp_by(iter($ys)->rev(), $f) < 0);
-        // $this->assertTrue(iter($xs)->cmp_by(iter($ys)->take(2), $f)> 0);
+        $this->assertTrue(iter($xs)->cmp_by(iter($ys)->take(2), $f) > 0);
     }
 
     public function testPartialCompareBy(): void
@@ -113,13 +112,12 @@ final class IteratorTest extends TestCase
         $this->assertTrue(iter($xs)->partial_cmp_by(iter($ys), $f) < 0);
         $this->assertTrue(iter($ys)->partial_cmp_by(iter($xs), $f) > 0);
         /** 
-         * TODO: Enable these tests after map(), rev() and take() have been 
-         * implemented 
+         * TODO: Enable these tests after map() and rev() have been implemented 
          */
         // $this->assertTrue(iter($xs)->partial_cmp_by(iter($xs)->map($square), $f) == 0);
         // $this->assertTrue(iter($xs)->rev()->partial_cmp_by(iter($ys)->rev(), $f) > 0);
         // $this->assertTrue(iter($xs)->partial_cmp_by(iter($xs)->rev(), $f) < 0);
-        // $this->assertTrue(iter($xs)->partial_cmp_by(iter($ys)->take(2), $f) > 0);
+        $this->assertTrue(iter($xs)->partial_cmp_by(iter($ys)->take(2), $f) > 0);
 
         $f = function (float $x, float $y): int|null {
             $square = $x * $x;
@@ -139,6 +137,31 @@ final class IteratorTest extends TestCase
 
         $this->assertTrue(iter($xs)->partial_cmp_by(iter($ys), $f) === null);
         $this->assertTrue(iter($ys)->partial_cmp_by(iter($xs), $f) > 0);
+    }
+
+    public function testTake(): void
+    {
+        $xs = [0, 1, 2, 3, 5, 13, 15, 16, 17, 19];
+        $ys = [0, 1, 2, 3, 5];
+
+        $it = iter($xs)->take(count($ys));
+        $i = 0;
+        while (($x = $it->next()) !== null) {
+            $this->assertEquals($x, $ys[$i]);
+            $i += 1;
+        }
+        $this->assertEquals($i, count($ys));
+
+        /**
+         * TODO: Enable these tests once ReverseIterators have been implemented
+         */
+        // $it = iter($xs)->take(count($ys));
+        // $i = 0;
+        // while (($x = $it->next_back()) !== null) {
+        //     $i += 1;
+        //     $this->assertEquals($x, $ys[count($ys) - i]);
+        // }
+        // $this->assertEquals($i, count($ys));
     }
 }
 
