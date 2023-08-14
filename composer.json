@@ -6,7 +6,10 @@
     "autoload": {
         "psr-4": {
             "PhpExpressive\\Iterators\\": "src/"
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     },
     "authors": [
         {

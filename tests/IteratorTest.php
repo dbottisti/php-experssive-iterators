@@ -4,11 +4,6 @@ namespace PhpExpressive\Iterators;
 
 use PHPUnit\Framework\TestCase;
 
-function iter(iterable $x): IteratorBase
-{
-    return new Iterator($x);
-}
-
 final class IteratorTest extends TestCase
 {
     public function testComparison(): void
