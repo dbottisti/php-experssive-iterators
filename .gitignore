@@ -1,2 +1,5 @@
 /dev-env/
 /vendor/
+/.phpdoc/
+/docs/
+
