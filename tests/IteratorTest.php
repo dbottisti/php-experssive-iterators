@@ -197,6 +197,22 @@ final class IteratorTest extends TestCase
         // $this->assertEquals(46, $iter->next_back());
 
     }
+
+    public function testAdvanceBy(): void
+    {
+        $v = [0, 1, 2, 3, 4];
+
+        for ($i = 0; $i < count($v); $i++) {
+            $iter = iter($v);
+            $this->assertEquals(true, $iter->advance_by($i));
+            $this->assertEquals($v[$i], $iter->next());
+            $this->assertEquals(false, $iter->advance_by(100));
+        }
+
+        $this->assertEquals(true, iter($v)->advance_by(count($v)));
+        $this->assertEquals(false, iter($v)->advance_by(100));
+
+    }
 }
 
 ?>

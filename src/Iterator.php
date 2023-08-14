@@ -152,6 +152,16 @@ abstract class IteratorBase
         }
         return $result;
     }
+
+    public function advance_by(int $count): bool
+    {
+        for ($i = 0; $i < $count; $i++) {
+            if ($this->next() === null) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 class Iterator extends IteratorBase
