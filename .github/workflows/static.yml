@@ -38,6 +38,8 @@ jobs:
         with:
           image: phpdoc/phpdoc:3
           options: -v ${{ github.workspace }}:/data phpdoc/phpdoc:3
+          run: |
+            phpdoc /data
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
