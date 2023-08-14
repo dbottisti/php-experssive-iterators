@@ -27,7 +27,6 @@ final class IteratorTest extends TestCase
         $this->assertFalse(iter($empty)->gt(iter($xs)));
         $this->assertFalse(iter($empty)->ge(iter($xs)));
 
-
         // Sequence with NaN
         $u = [1.0, 2.0];
         $v = [NAN, 3.0];

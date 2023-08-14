@@ -5,9 +5,9 @@ namespace PhpExpressive\Iterators;
 /**
  * An iterator that contains a subset of the elements in another iterator.
  * 
- * It is returned by calls to `IteratorBase::take()`.
+ * It is returned by calls to `Iterator::take()`.
  */
-class TakeIterator extends DelegatingIterator
+class TakeIterator extends Adaptors\DelegatingIterator
 {
     /** @ignore */
     private int $count = 0;
@@ -20,7 +20,7 @@ class TakeIterator extends DelegatingIterator
      * @param $iterator The iterator containing the values
      * @param $n The maximum number of elements to return
      */
-    public function __construct(IteratorBase $iterator, int $n)
+    public function __construct(Iterator $iterator, int $n)
     {
         parent::__construct($iterator);
         $this->n = $n;

@@ -5,9 +5,9 @@ namespace PhpExpressive\Iterators;
 /**
  * An iterator that applies a user function to each of its elements.
  * 
- * It is returned by calls to `IteratorBase::map()`.
+ * It is returned by calls to `Iterator::map()`.
  */
-class MapIterator extends DelegatingIterator
+class MapIterator extends Adaptors\DelegatingIterator
 {
     /** @ignore */
     private \Closure $f;
@@ -18,7 +18,7 @@ class MapIterator extends DelegatingIterator
      * @param $iterator The iterator containing the values
      * @param $f The mapping function to apply to the values
      */
-    public function __construct(IteratorBase $iterator, \Closure $f)
+    public function __construct(Iterator $iterator, \Closure $f)
     {
         parent::__construct($iterator);
         $this->f = $f;

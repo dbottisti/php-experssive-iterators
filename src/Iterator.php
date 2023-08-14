@@ -6,7 +6,7 @@ namespace PhpExpressive\Iterators;
  * An extension of the Standard PHP Library's Iterator class, with additional 
  * methods to make working with Iterators more expressive.
  */
-abstract class IteratorBase implements \Iterator
+abstract class Iterator implements \Iterator
 {
     /**
      * Determines the current value, advances the iterator and returns the 
@@ -51,7 +51,7 @@ abstract class IteratorBase implements \Iterator
      * @return bool True if `$this` is considered lexicographically less-than 
      * `other`.
      */
-    public function lt(IteratorBase $other): bool
+    public function lt(Iterator $other): bool
     {
         while (true) {
             if (!$this->valid()) {
@@ -83,13 +83,13 @@ abstract class IteratorBase implements \Iterator
      * assert(iter([1, 2])->le(iter([1, 2])));
      * ```
      * 
-     * @see IteratorBase::lt For a defintion of lexicographical comparison
+     * @see Iterator::lt() For a defintion of lexicographical comparison
      * @param $other The iterator to compare to (i.e., the right-hand side of 
      * the comparison).
      * @return bool True if `$this` is considered lexicographically less-than or 
      * equal to `other`.
      */
-    public function le(IteratorBase $other): bool
+    public function le(Iterator $other): bool
     {
         while (true) {
             if (!$this->valid()) {
@@ -121,13 +121,13 @@ abstract class IteratorBase implements \Iterator
      * assert(!(iter([1, 2])->gt(iter([1, 2]))));
      * ```
      * 
-     * @see IteratorBase::lt For a defintion of lexicographical comparison
+     * @see Iterator::lt() For a defintion of lexicographical comparison
      * @param $other The iterator to compare to (i.e., the right-hand side of 
      * the comparison).
      * @return bool True if `$this` is considered lexicographically greater than
      * `other`.
      */
-    public function gt(IteratorBase $other): bool
+    public function gt(Iterator $other): bool
     {
         while (true) {
             if (!$this->valid()) {
@@ -159,13 +159,13 @@ abstract class IteratorBase implements \Iterator
      * assert(iter([1, 2])->ge(iter([1, 2])));
      * ```
      * 
-     * @see IteratorBase::lt For a defintion of lexicographical comparison
+     * @see Iterator::lt() For a defintion of lexicographical comparison
      * @param $other The iterator to compare to (i.e., the right-hand side of 
      * the comparison).
      * @return bool True if `$this` is considered lexicographically greater than
      * or equal to `other`.
      */
-    public function ge(IteratorBase $other): bool
+    public function ge(Iterator $other): bool
     {
         while (true) {
             if (!$this->valid()) {
@@ -201,12 +201,18 @@ abstract class IteratorBase implements \Iterator
      *      return 0;
      * }
      *  
-     * assert(iter($xs)->cmp_by(iter($ys), fn(&x, &y) => $cmp($x, $y)) < 0);
-     * assert(iter($xs)->cmp_by(iter($ys), fn(&x, &y) => $cmp($x * $x, $y)) == 0);
-     * assert(iter($xs)->cmp_by(iter($ys), fn(&x, &y) => $cmp(2 * $x, $y)) > 0);
+     * assert(iter($xs)->cmp_by(
+     *    iter($ys), 
+     *    fn(&x, &y) => $cmp($x, $y)) < 0);
+     * assert(iter($xs)->cmp_by(
+     *    iter($ys), 
+     *    fn(&x, &y) => $cmp($x * $x, $y)) == 0);
+     * assert(iter($xs)->cmp_by(
+     *    iter($ys), 
+     *    fn(&x, &y) => $cmp(2 * $x, $y)) > 0);
      * ```
      * 
-     * @see IteratorBase::lt For a defintion of lexicographical comparison
+     * @see Iterator::lt() For a defintion of lexicographical comparison
      * @param $other The iterator to compare to (i.e., the right-hand side of 
      * the comparison).
      * @param $f A user-supplied function accepting two input parameters.  It 
@@ -217,7 +223,7 @@ abstract class IteratorBase implements \Iterator
      * `$other`, -1 if `$this` is lexicographically less than `$other`, and 1 if
      * `$this` is lexicographically greater than `$other`.
      */
-    public function cmp_by(IteratorBase $other, callable $f): int
+    public function cmp_by(Iterator $other, callable $f): int
     {
         while (true) {
             if (!$this->valid() && !$other->valid()) {
@@ -261,18 +267,30 @@ abstract class IteratorBase implements \Iterator
      *      return 0;
      * }
      *  
-     * assert(iter($xs)->cmp_by(iter($ys), fn(&x, &y) => $cmp($x, $y)) < 0);
-     * assert(iter($xs)->cmp_by(iter($ys), fn(&x, &y) => $cmp($x * $x, $y)) == 0);
-     * assert(iter($xs)->cmp_by(iter($ys), fn(&x, &y) => $cmp(2 * $x, $y)) > 0);
+     * assert(iter($xs)->cmp_by(
+     *      iter($ys), 
+     *      fn(&x, &y) => $cmp($x, $y)) < 0);
+     * assert(iter($xs)->cmp_by(
+     *      iter($ys), 
+     *      fn(&x, &y) => $cmp($x * $x, $y)) == 0);
+     * assert(iter($xs)->cmp_by(
+     *      iter($ys), 
+     *      fn(&x, &y) => $cmp(2 * $x, $y)) > 0);
      * 
      * $xs[2] = NAN;
      *  
-     * assert(iter($xs)->cmp_by(iter($ys), fn(&x, &y) => $cmp($x, $y)) == null);
-     * assert(iter($xs)->cmp_by(iter($ys), fn(&x, &y) => $cmp($x * $x, $y)) == null);
-     * assert(iter($xs)->cmp_by(iter($ys), fn(&x, &y) => $cmp(2 * $x, $y)) == null);
+     * assert(iter($xs)->cmp_by(
+     *      iter($ys), 
+     *      fn(&x, &y) => $cmp($x, $y)) == null);
+     * assert(iter($xs)->cmp_by(
+     *      iter($ys), 
+     *      fn(&x, &y) => $cmp($x * $x, $y)) == null);
+     * assert(iter($xs)->cmp_by(
+     *      iter($ys), 
+     *      fn(&x, &y) => $cmp(2 * $x, $y)) == null);
      * ```
      * 
-     * @see IteratorBase::lt For a defintion of lexicographical comparison
+     * @see Iterator::lt() For a defintion of lexicographical comparison
      * @param $other The iterator to compare to (i.e., the right-hand side of 
      * the comparison).
      * @param $f A user-supplied function accepting two input parameters.  It 
@@ -284,7 +302,7 @@ abstract class IteratorBase implements \Iterator
      * is lexicographically less than `$other`, and 1 if `$this` is 
      * lexicographically greater than `$other`. 
      * */
-    public function partial_cmp_by(IteratorBase $other, callable $f): ?int
+    public function partial_cmp_by(Iterator $other, callable $f): ?int
     {
         while (true) {
             if (!$this->valid() && !$other->valid()) {
@@ -384,7 +402,8 @@ abstract class IteratorBase implements \Iterator
      * 
      * **Examples**:
      * ```php
-     * $reduced = iter(range(1, 9))->reduce(fn($acc, $e) => $acc + $e);
+     * $reduced = iter(range(1, 9))->reduce(
+     *      fn($acc, $e) => $acc + $e);
      * assert($reduced == 45);
      * ```
      * 
@@ -507,58 +526,6 @@ abstract class IteratorBase implements \Iterator
         }
         return null;
     }
-}
-
-/** 
- * @ignore
- */
-abstract class DelegatingIterator extends IteratorBase
-{
-    private \Iterator $iterator;
-
-    public function __construct(iterable $iterator)
-    {
-        if (is_subclass_of($iterator, '\Iterator')) {
-            $this->iterator = $iterator;
-        } else if (is_array($iterator)) {
-            $this->iterator = new \ArrayIterator($iterator);
-        } else {
-            // is \Traversable
-            $this->iterator = new \IteratorIterator($iterator);
-        }
-    }
-
-    public function next(): void
-    {
-        $this->iterator->next();
-    }
-
-    public function current(): mixed
-    {
-        return $this->iterator->current();
-    }
-
-    public function key(): mixed
-    {
-        return $this->iterator->key();
-    }
-
-    public function rewind(): void
-    {
-        $this->iterator->rewind();
-    }
-
-    public function valid(): bool
-    {
-        return $this->iterator->valid();
-    }
-}
-
-/** 
- * @ignore
- */
-class Iterator extends DelegatingIterator
-{
 }
 
 ?>
