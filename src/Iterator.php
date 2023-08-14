@@ -170,6 +170,16 @@ abstract class IteratorBase
         }
         return $this->next();
     }
+
+    public function find(callable $f): mixed
+    {
+        while (($value = $this->next()) !== null) {
+            if ($f($value)) {
+                return $value;
+            }
+        }
+        return null;
+    }
 }
 
 class Iterator extends IteratorBase

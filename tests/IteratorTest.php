@@ -221,6 +221,14 @@ final class IteratorTest extends TestCase
         }
         $this->assertEquals(null, iter($v)->nth(count($v)));
     }
+
+    public function testTry(): void
+    {
+        $v = [1, 3, 9, 27, 103, 14, 11];
+        $this->assertEquals(14, iter($v)->find(fn($x) => ($x & 1) == 0));
+        $this->assertEquals(3, iter($v)->find(fn($x) => $x % 3 == 0));
+        $this->assertEquals(null, iter($v)->find(fn($x) => $x % 12 == 0));
+    }
 }
 
 ?>
