@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Dbottisti\PhpExpressiveIterators;
+namespace PhpExpressive\Iterators;
 
 use PHPUnit\Framework\TestCase;
 
