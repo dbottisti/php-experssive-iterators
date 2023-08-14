@@ -139,7 +139,7 @@ abstract class IteratorBase
         return new TakeIterator($this, $num);
     }
 
-    public function map(callable $f): MapIterator
+    public function map(\Closure $f): MapIterator
     {
         return new MapIterator($this, $f);
     }
@@ -161,6 +161,14 @@ abstract class IteratorBase
             }
         }
         return true;
+    }
+
+    public function nth(int $n): mixed
+    {
+        if (!$this->advance_by($n)) {
+            return null;
+        }
+        return $this->next();
     }
 }
 

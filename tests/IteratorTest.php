@@ -211,7 +211,15 @@ final class IteratorTest extends TestCase
 
         $this->assertEquals(true, iter($v)->advance_by(count($v)));
         $this->assertEquals(false, iter($v)->advance_by(100));
+    }
 
+    public function testNth(): void
+    {
+        $v = [0, 1, 2, 3, 4];
+        for ($i = 0; $i < count($v); $i++) {
+            $this->assertEquals($v[$i], iter($v)->nth($i));
+        }
+        $this->assertEquals(null, iter($v)->nth(count($v)));
     }
 }
 
