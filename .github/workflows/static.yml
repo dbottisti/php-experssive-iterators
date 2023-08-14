@@ -37,7 +37,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: phpdoc/phpdoc:3
-          options: -v ${{ github.workspace }}:/data phpdoc/phpdoc:3
+          options: -v ${{ github.workspace }}:/data
           run: |
             phpdoc /data
       - name: Upload artifact
