@@ -35,9 +35,9 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Generate documentation
         uses: addnab/docker-run-action@v3
-            with:
-                image: phpdoc/phpdoc:3
-                options: -v ${{ github.workspace }}:/data phpdoc/phpdoc:3
+        with:
+          image: phpdoc/phpdoc:3
+          options: -v ${{ github.workspace }}:/data phpdoc/phpdoc:3
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
