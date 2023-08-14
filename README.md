@@ -2,3 +2,6 @@
 
 # php-experssive-iterators
 PHP Expressive Iterators
+
+## Documentation
+[API](https://dbottisti.github.io/php-experssive-iterators/)
