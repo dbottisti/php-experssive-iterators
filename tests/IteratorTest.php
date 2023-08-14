@@ -172,9 +172,12 @@ final class IteratorTest extends TestCase
             iter(range(0, 10))->map(fn($x) => $x + 3)->reduce(7, $f),
             iter(range(3, 13))->reduce(7, $f)
         );
+        /**
+         * TODO: Enable these tests once rev_reduce have been implemented
+         */
         // $this->assertEquals(
-        //     iter(range(3, 13))->rfold(7, $f),
-        //     iter(range(0, 10))->map(fn($x) => $x + 3)->rfold(7, $f)
+        //     iter(range(3, 13))->rev_reduce(7, $f),
+        //     iter(range(0, 10))->map(fn($x) => $x + 3)->rev_reduce(7, $f)
         // );
 
         $f = function (int $acc, int $x) {
@@ -187,7 +190,10 @@ final class IteratorTest extends TestCase
         $iter = iter(range(0, 40))->map(fn($x) => $x + 10);
         $this->assertEquals(null, $iter->reduce(0, $f));
         $this->assertEquals(20, $iter->next());
-        // $this->assertEquals(null, $iter->try_rfold(0, $f));
+        /**
+         * TODO: Enable these tests once rev_reduce have been implemented
+         */
+        // $this->assertEquals(null, $iter->rev_reduce(0, $f));
         // $this->assertEquals(46, $iter->next_back());
 
     }

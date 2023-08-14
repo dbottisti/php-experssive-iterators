@@ -17,7 +17,6 @@ class MapIterator extends IteratorBase
         $result = ($this->f)($value);
         return $result;
     }
-
 }
 
 ?>
