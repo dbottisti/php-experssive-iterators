@@ -11,7 +11,8 @@ namespace PhpExpressive\Iterators;
 function iter(iterable $iterator): Iterator
 {
     if (is_subclass_of($iterator, '\Iterator')) {
-        return new Adaptors\DelegatingIterator($iterator);
+        /** @var Iterator $iterator */
+        return $iterator;
     } else if (is_array($iterator)) {
         return new Adaptors\DelegatingIterator(new \ArrayIterator($iterator));
     } else {
