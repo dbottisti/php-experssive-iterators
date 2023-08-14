@@ -139,7 +139,7 @@ final class IteratorTest extends TestCase
 
         $it = iter($xs)->take(count($ys));
         $i = 0;
-        while (($x = $it->next()) !== null) {
+        foreach ($it as $x) {
             $this->assertEquals($ys[$i], $x);
             $i += 1;
         }
@@ -150,7 +150,7 @@ final class IteratorTest extends TestCase
          */
         // $it = iter($xs)->take(count($ys));
         // $i = 0;
-        // while (($x = $it->next_back()) !== null) {
+        // foreach ($it as $x) {
         //     $i += 1;
         //     $this->assertEquals($ys[count($ys) - i], $x);
         // }
@@ -166,11 +166,11 @@ final class IteratorTest extends TestCase
             return 2 * $acc + $x;
         };
 
-        $this->assertEquals(iter(range(3, 13))->reduce(7, $f), 22513);
+        $this->assertEquals(22513, iter(range(3, 13))->reduce(7, $f));
 
         $this->assertEquals(
-            iter(range(0, 10))->map(fn($x) => $x + 3)->reduce(7, $f),
-            iter(range(3, 13))->reduce(7, $f)
+            iter(range(3, 13))->reduce(7, $f),
+            iter(range(0, 10))->map(fn($x) => $x + 3)->reduce(7, $f)
         );
         /**
          * TODO: Enable these tests once rev_reduce have been implemented
@@ -189,13 +189,13 @@ final class IteratorTest extends TestCase
 
         $iter = iter(range(0, 40))->map(fn($x) => $x + 10);
         $this->assertEquals(null, $iter->reduce(0, $f));
-        $this->assertEquals(20, $iter->next());
+        $this->assertEquals(20, $iter->current());
+        $iter->next();
         /**
          * TODO: Enable these tests once rev_reduce have been implemented
          */
         // $this->assertEquals(null, $iter->rev_reduce(0, $f));
         // $this->assertEquals(46, $iter->next_back());
-
     }
 
     public function testAdvanceBy(): void
@@ -205,7 +205,8 @@ final class IteratorTest extends TestCase
         for ($i = 0; $i < count($v); $i++) {
             $iter = iter($v);
             $this->assertEquals(true, $iter->advance_by($i));
-            $this->assertEquals($v[$i], $iter->next());
+            $this->assertEquals($v[$i], $iter->current());
+            $iter->next();
             $this->assertEquals(false, $iter->advance_by(100));
         }
 
@@ -222,7 +223,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals(null, iter($v)->nth(count($v)));
     }
 
-    public function testTry(): void
+    public function testFind(): void
     {
         $v = [1, 3, 9, 27, 103, 14, 11];
         $this->assertEquals(14, iter($v)->find(fn($x) => ($x & 1) == 0));

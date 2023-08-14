@@ -2,20 +2,16 @@
 
 namespace PhpExpressive\Iterators;
 
-class MapIterator extends IteratorBase
+class MapIterator extends DelegatingIterator
 {
-    public function __construct(private IteratorBase $parent, private \Closure $f)
+    public function __construct(IteratorBase $parent, private \Closure $f)
     {
+        parent::__construct($parent);
     }
 
-    public function next(): mixed
+    public function current(): mixed
     {
-        $value = $this->parent->next();
-        if ($value === null) {
-            return null;
-        }
-        $result = ($this->f)($value);
-        return $result;
+        return ($this->f)(parent::current());
     }
 }
 
