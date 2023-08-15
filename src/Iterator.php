@@ -566,6 +566,16 @@ abstract class Iterator implements \Iterator
     {
         return new FilterIterator($this, $filter);
     }
+
+    /**
+     * Place all of the element in the iterator into an array
+     * 
+     * @return array An array containing the values that are in the iterator
+     */
+    public function to_array(): array
+    {
+        return iterator_to_array($this);
+    }
 }
 
 ?>
