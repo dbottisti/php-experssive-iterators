@@ -46,7 +46,7 @@ abstract class Iterator implements \Iterator
      * assert(!(iter([1, 2])->lt(iter([1, 2]))));
      * ```
      * 
-     * @param $other The iterator to compare to (i.e., the right-hand side of 
+     * @param Iterator $other The iterator to compare to (i.e., the right-hand side of 
      * the comparison).
      * @return bool True if `$this` is considered lexicographically less-than 
      * `other`.
@@ -84,7 +84,7 @@ abstract class Iterator implements \Iterator
      * ```
      * 
      * @see Iterator::lt() For a defintion of lexicographical comparison
-     * @param $other The iterator to compare to (i.e., the right-hand side of 
+     * @param Iterator $other The iterator to compare to (i.e., the right-hand side of 
      * the comparison).
      * @return bool True if `$this` is considered lexicographically less-than or 
      * equal to `other`.
@@ -122,7 +122,7 @@ abstract class Iterator implements \Iterator
      * ```
      * 
      * @see Iterator::lt() For a defintion of lexicographical comparison
-     * @param $other The iterator to compare to (i.e., the right-hand side of 
+     * @param Iterator $other The iterator to compare to (i.e., the right-hand side of 
      * the comparison).
      * @return bool True if `$this` is considered lexicographically greater than
      * `other`.
@@ -160,7 +160,7 @@ abstract class Iterator implements \Iterator
      * ```
      * 
      * @see Iterator::lt() For a defintion of lexicographical comparison
-     * @param $other The iterator to compare to (i.e., the right-hand side of 
+     * @param Iterator $other The iterator to compare to (i.e., the right-hand side of 
      * the comparison).
      * @return bool True if `$this` is considered lexicographically greater than
      * or equal to `other`.
@@ -213,9 +213,9 @@ abstract class Iterator implements \Iterator
      * ```
      * 
      * @see Iterator::lt() For a defintion of lexicographical comparison
-     * @param $other The iterator to compare to (i.e., the right-hand side of 
+     * @param Iterator $other The iterator to compare to (i.e., the right-hand side of 
      * the comparison).
-     * @param $f A user-supplied function accepting two input parameters.  It 
+     * @param callable $f A user-supplied function accepting two input parameters.  It 
      * should return a value less than 0 (typically -1) when the first parameter 
      * is less-than the second, a value greater than 0 (typically 1) when the 
      * first parameter is greater-than the second, and 0 when they are equal.
@@ -291,9 +291,9 @@ abstract class Iterator implements \Iterator
      * ```
      * 
      * @see Iterator::lt() For a defintion of lexicographical comparison
-     * @param $other The iterator to compare to (i.e., the right-hand side of 
+     * @param Iterator $other The iterator to compare to (i.e., the right-hand side of 
      * the comparison).
-     * @param $f A user-supplied function accepting two input parameters.  It 
+     * @param callable $f A user-supplied function accepting two input parameters.  It 
      * should return a value less than 0 (typically -1) when the first parameter 
      * is less-than the second, a value greater than 0 (typically 1) when the 
      * first parameter is greater-than the second, and 0 when they are equal.
@@ -354,7 +354,7 @@ abstract class Iterator implements \Iterator
      * assert($iter->valid() == false);
      * ```
      * 
-     * @param $num The maximum number of elements that the resulting iterator 
+     * @param int $num The maximum number of elements that the resulting iterator 
      * will contain.
      * @return TakeIterator A new iterator that contains at most `$n` elements.
      */
@@ -382,13 +382,26 @@ abstract class Iterator implements \Iterator
      * assert(iter->current() == null);
      * ```
      * 
-     * @param $f The user supplied function taking one parameter and returning 
+     * @param \Closure $f The user supplied function taking one parameter and returning 
      * its transformed value.
      * @return MapIterator A new iterator that yields transformed values.
      */
     public function map(\Closure $f): MapIterator
     {
         return new MapIterator($this, $f);
+    }
+
+    /**
+     * Alias for the map function.
+     * 
+     * @see Iterator::map()
+     * @param \Closure $f The user supplied function taking one parameter and returning 
+     * its transformed value.
+     * @return MapIterator A new iterator that yields transformed values.
+     */
+    public function transform(\Closure $f): MapIterator
+    {
+        return $this->map($f);
     }
 
     /**
@@ -407,9 +420,9 @@ abstract class Iterator implements \Iterator
      * assert($reduced == 45);
      * ```
      * 
-     * @param $init The initial "accumulated" value to pass to the accumulator 
+     * @param mixed $init The initial "accumulated" value to pass to the accumulator 
      * function
-     * @param $accumulator The accumulator function.  It should take two 
+     * @param callable $accumulator The accumulator function.  It should take two 
      * parameters, the current accumlated value and the new value, and return 
      * the result of combining them.
      * @return mixed The final calculated value of `$accumlator`, `null` if 
@@ -443,7 +456,7 @@ abstract class Iterator implements \Iterator
      * assert($iter->advance_by(100) == false);
      * ```
      * 
-     * @param $count The number of elements to advance by
+     * @param int $count The number of elements to advance by
      * @return bool `true` if the iterator was successfully advanced (i.e., it 
      * had enough element), `false` otherwise.
      */
@@ -475,7 +488,7 @@ abstract class Iterator implements \Iterator
      * assert($iter->nth(1) == null);
      * ```
      * 
-     * @param $n The (0-based) index of the desired element
+     * @param int $n The (0-based) index of the desired element
      * @return mixed The value at the `$n`th position, or `null` if the iterator 
      * contains fewer than `$n` remaining values.
      */
@@ -511,7 +524,7 @@ abstract class Iterator implements \Iterator
      * assert($iter->current() == 3);
      * ```
      * 
-     * @param $f The predicate function to pass elements to.  It should accept 
+     * @param callable $f The predicate function to pass elements to.  It should accept 
      * one parameter and return `true` if the parameter meets the desired 
      * condition.
      * @return mixed The desired element, or `null` if no element meets the 
