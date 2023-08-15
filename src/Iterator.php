@@ -539,6 +539,20 @@ abstract class Iterator implements \Iterator
         }
         return null;
     }
+
+    /** 
+     * Consumes the iterator, counting the number of elements it contains.
+     * 
+     * @return int The number elements in the `Iterator`.
+     */
+    public function count(): int
+    {
+        $count = 0;
+        foreach ($this as $_) {
+            $count++;
+        }
+        return $count;
+    }
 }
 
 ?>
