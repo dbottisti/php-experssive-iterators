@@ -9,10 +9,10 @@ Imagine you have an array of email addresses (`$input_array`) and would like to 
 ```php
 $num_chars_to_trim = strlen('@gmail.com');
 $gmail_addresses = [];
-foreach ($address in $input_array) {
+foreach ($input_array as $address) {
     // We are assuming PHP 8.2, and ignoring RegEx functions for now
-    if (str_ends_with(str_to_lower($address), '@gmail.com')) {
-        $gmail_addresses[] = str_to_lower(substr($address, 0, -$num_chars_to_trim));
+    if (str_ends_with(strtolower($address), '@gmail.com')) {
+        $gmail_addresses[] = strtolower(substr($address, 0, -$num_chars_to_trim));
         if (count($gmail_addresses) == 10) {
             break;
         }
@@ -24,14 +24,14 @@ While this is a perfectly acceptable solution, if you were to look at it again w
 
 ```php
 $is_gmail_address = fn($address) => 
-    str_ends_with(str_to_lower($address), 'gmail.com');
+    str_ends_with(strtolower($address), 'gmail.com');
 
 $num_chars_to_trim = strlen('@gmail.com');
 $trim_gmail_com = fn($address) =>
-    str_to_lower(substr($address, 0, -$num_chars_to_trim));
+    strtolower(substr($address, 0, -$num_chars_to_trim));
 
 $gmail_addresses = [];
-foreach ($address in $input_array) {
+foreach ($input_array as $address) {
     if ($is_gmail_address($address)) {
         $gmail_addresses[] = $trim_gmail_com($address);
         if (count($gmail_addresses) == 10) {
@@ -45,7 +45,7 @@ That's a little better, but can we do better?  It still seems like there's a lot
 // ... As before
 
 $gmail_addresses = [];
-foreach ($address in $input_array) {
+foreach ($input_array as $address) {
     if ($is_gmail_address($address)) {
         $gmail_addresses[] = $trim_gmail_com($address);
     }
@@ -58,20 +58,21 @@ Let's look at PHP's `Iterator` classes to see if they can help
 ```php
 // ... As before
 
-$filtered = new \CallbackFilterIterator($input_array, $is_gmail_address);
+$input_iterator = new \ArrayIterator($input_array);
+$filtered = new \CallbackFilterIterator($input_iterator, $is_gmail_address);
 $transformed = new \TransformIterator($filtered, $trim_gmail_com); // Uh oh!
-$gmail_addresses = new \LimitIterator($transformed, $limit=10);
+$gmail_addresses = new \LimitIterator($transformed, limit: 10);
 $gmail_addresses = iterator_to_array($gmail_addresses);
 ```
 This looks promising, but PHP doesn't have a `TransformIterator`.  Let's write one quick:
 ```php
-public class TransformIterator implements Iterator {
-    public function __construct(private iterable $iterator, private callable $f) {}
+class TransformIterator implements Iterator {
+    public function __construct(private iterable $iterator, private \Closure $f) {}
 
     public function current(): mixed { return ($this->f)($this->iterator->current()); }
     public function key(): mixed { return $this->iterator->key(); }
-    public function next(): void { return $this->iterator->next(); }
-    public function rewind(): void { return $this->iterator->rewind(); }
+    public function next(): void { $this->iterator->next(); }
+    public function rewind(): void { $this->iterator->rewind(); }
     public function valid(): bool { return $this->iterator->valid(); }
 }
 ```
