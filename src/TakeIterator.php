@@ -38,7 +38,6 @@ class TakeIterator extends Adaptors\DelegatingIterator
     {
         return $this->count < $this->n && parent::valid();
     }
-
 }
 
 ?>

@@ -231,6 +231,15 @@ final class IteratorTest extends TestCase
         $this->assertEquals(7, iter($v)->count());
         $this->assertEquals(4, iter($v)->take(4)->count());
     }
+
+    public function testFilter(): void
+    {
+        $xs = [1, 2, 2, 1, 5, 9, 0, 2];
+        $this->assertEquals(3, iter($xs)->filter(fn($x) => $x == 2)->count());
+        $this->assertEquals(2, iter($xs)->filter(fn($x) => $x == 1)->count());
+        $this->assertEquals(1, iter($xs)->filter(fn($x) => $x == 5)->count());
+        $this->assertEquals(0, iter($xs)->filter(fn($x) => $x == 95)->count());
+    }
 }
 
 ?>

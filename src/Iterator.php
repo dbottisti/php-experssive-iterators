@@ -553,6 +553,19 @@ abstract class Iterator implements \Iterator
         }
         return $count;
     }
+
+    /**
+     * Creates a new iterator that only yields values that pass supplied 
+     * predicate function.
+     * 
+     * @param callable $filter The predicate to apply to elements of the 
+     * `Iterator`
+     * @return FilterIterator The filtered `Iterator`
+     */
+    public function filter(callable $filter): FilterIterator
+    {
+        return new FilterIterator($this, $filter);
+    }
 }
 
 ?>
