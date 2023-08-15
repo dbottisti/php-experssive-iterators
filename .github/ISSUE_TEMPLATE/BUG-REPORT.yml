@@ -19,6 +19,8 @@ body:
     attributes:
       label: "Expected Behavior"
       description: What did you expect to happen?
+    validations:
+      required: true
 
   - type: textarea
     id: actual-behavior
