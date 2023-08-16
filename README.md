@@ -124,4 +124,4 @@ TODO
 Please see the [Changelog](changelog.md) to see the new features, bug fixes and deprecations for each release.
 
 ## Documentation
-You can look at the [API documentation](https://dbottisti.github.io/php-experssive-iterators/) to see all of the currently implemented features and lots of examples of how to use them in your code.
+You can look at the [API documentation](https://dbottisti.github.io/php-expressive-iterators/) to see all of the currently implemented features and lots of examples of how to use them in your code.
